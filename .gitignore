@@ -1,0 +1,79 @@
+# -------------------------------------------------------------------
+# Essential Files to Ignore for Web/App Development (FoodRush)
+# -------------------------------------------------------------------
+
+# 1. Dependency Directories (Re-created by package managers)
+# Node.js/JavaScript dependencies
+/node_modules
+
+# PHP Composer dependencies (if used)
+/vendor
+
+# Python virtual environments (if used)
+/venv
+/env
+__pycache__/
+
+# -------------------------------------------------------------------
+# 2. Next.js / Build / Output / Cache Directories (CRITICAL)
+# -------------------------------------------------------------------
+# The primary build and output directory for Next.js
+/.next/
+/out/
+
+# General build directories
+/dist
+/build
+/target
+/public/build
+/temp_cache/
+
+# Cache directories
+/cache
+
+# -------------------------------------------------------------------
+# 3. Local Configuration and Secret Files (CRITICAL for Security)
+# -------------------------------------------------------------------
+# Environment variables (MUST NOT BE COMMITTED)
+.env
+.env.local
+.env.*.local
+secrets.*
+credentials.*
+*.config.local.*
+
+# NextAuth session files (if using file-based storage)
+*.session.json
+
+# -------------------------------------------------------------------
+# 4. Log and Temporary Files
+# -------------------------------------------------------------------
+*.log
+*.tmp
+
+# Specific Node/NPM logs
+npm-debug.log*
+yarn-error.log
+storage/*.log
+
+# -------------------------------------------------------------------
+# 5. Operating System (OS) and IDE/Editor Files
+# -------------------------------------------------------------------
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# JetBrains IDEs (IntelliJ, PyCharm, WebStorm, etc.)
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Miscellaneous (If you use SQLite for local development)
+*.sqlite3
+db.sqlite
