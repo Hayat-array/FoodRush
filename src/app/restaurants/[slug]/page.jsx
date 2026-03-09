@@ -3177,7 +3177,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { Star, Clock, MapPin, Plus, Heart, ShoppingBag, ArrowLeft, Zap, Edit, PlusCircle } from 'lucide-react';
+import { Star, Clock, MapPin, Plus, Heart, ShoppingBag, ArrowLeft, Zap, Edit, PlusCircle, QrCode } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -3186,6 +3186,7 @@ import { Switch } from '@/components/ui/switch'; // Import Switch
 import { Label } from '@/components/ui/label';
 import { useCartStore } from '@/stores/cartStore';
 import { useToast } from '@/hooks/use-toast';
+import { QrCodeSection } from '@/components/QrCodeSection';
 import Link from 'next/link';
 
 export default function RestaurantPage() {
@@ -3198,6 +3199,7 @@ export default function RestaurantPage() {
   const [dishes, setDishes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [showQR, setShowQR] = useState(false);
   const [favLoading, setFavLoading] = useState(false);
   
   const addToCart = useCartStore((state) => state.addToCart);
@@ -3401,11 +3403,27 @@ const handleBuyNow = (dish) => {
                 <Button asChild variant="outline" className="border-white text-white hover:bg-white/20">
                   <Link href="/admin/restaurant"><Edit className="w-4 h-4 mr-2" /> Dashboard</Link>
                 </Button>
+                <Button 
+                  variant="outline" 
+                  className="border-white text-white hover:bg-white/20"
+                  onClick={() => setShowQR(!showQR)}
+                >
+                  <QrCode className="w-4 h-4 mr-2" /> {showQR ? 'Hide' : 'Show'} QR
+                </Button>
               </div>
             ) : (
-              <Button size="icon" variant="secondary" className="rounded-full h-12 w-12 bg-white/20 hover:bg-white/40 border-0 backdrop-blur-sm" onClick={handleToggleFavorite}>
-                <Heart className={`w-6 h-6 ${isFavorite ? "fill-red-500 text-red-500" : "text-white"}`} />
-              </Button>
+              <div className="flex gap-2">
+                <Button size="icon" variant="secondary" className="rounded-full h-12 w-12 bg-white/20 hover:bg-white/40 border-0 backdrop-blur-sm" onClick={handleToggleFavorite}>
+                  <Heart className={`w-6 h-6 ${isFavorite ? "fill-red-500 text-red-500" : "text-white"}`} />
+                </Button>
+                <Button 
+                  variant="secondary" 
+                  className="bg-white/20 hover:bg-white/40 border-0 backdrop-blur-sm text-white"
+                  onClick={() => setShowQR(!showQR)}
+                >
+                  <QrCode className="w-4 h-4 mr-2" /> {showQR ? 'Hide' : 'Show'} QR
+                </Button>
+              </div>
             )}
           </div>
         </div>
@@ -3485,6 +3503,13 @@ const handleBuyNow = (dish) => {
 
         {/* Sidebar */}
         <div className="space-y-6">
+          {showQR && restaurant && (
+            <QrCodeSection 
+              restaurantSlug={restaurant.slug} 
+              restaurantName={restaurant.name}
+            />
+          )}
+          
           <Card className="p-6">
             <h3 className="font-bold text-lg mb-4">Delivery Details</h3>
             <div className="space-y-3 text-sm text-gray-600">
