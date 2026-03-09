@@ -42,6 +42,11 @@ const orderSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    customerId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
     customer: {
         name: {
             type: String,
@@ -59,20 +64,34 @@ const orderSchema = new mongoose.Schema({
         required: true
     },
     items: [orderItemSchema],
-    deliveryOTP: { type: String },
-    assignedTo: {
+
+    deliveryPartnerId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         default: null
     },
-    otpGeneratedAt: {
-        type: Date,
-        default: null
+
+    otp: {
+        code: String,
+        expiresAt: Date,
+        verified: {
+            type: Boolean,
+            default: false
+        }
     },
-    otpVerified: {
-        type: Boolean,
-        default: false
-    },
+
+    timeline: [{
+        status: String,
+        timestamp: {
+            type: Date,
+            default: Date.now
+        },
+        updatedBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        },
+        note: String
+    }],
     deliveryType: {
         type: String,
         enum: ['delivery', 'pickup'],
@@ -138,7 +157,19 @@ const orderSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['pending', 'pending_payment', 'confirmed', 'preparing', 'ready', 'out_for_delivery', 'delivered', 'cancelled'],
+        enum: [
+            'pending',           // Order placed, waiting for restaurant
+            'pending_payment',   // Waiting for payment verification
+            'accepted',          // Restaurant accepted
+            'preparing',         // Food being prepared
+            'ready',             // Ready for pickup
+            'assigned',          // Delivery partner assigned
+            'picked_up',         // Delivery partner picked up
+            'out_for_delivery',  // On the way
+            'nearby',            // Near customer location
+            'delivered',         // Completed
+            'cancelled'          // Cancelled
+        ],
         default: 'pending'
     },
     estimatedDeliveryTime: {
@@ -163,6 +194,49 @@ orderSchema.pre('save', function (next) {
     this.updatedAt = Date.now();
     next();
 });
+
+// Method to add timeline entry
+orderSchema.methods.addTimelineEntry = function (status, updatedBy, note) {
+    this.timeline.push({
+        status,
+        timestamp: new Date(),
+        updatedBy,
+        note
+    });
+};
+
+// Method to generate OTP
+orderSchema.methods.generateOTP = function () {
+    const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+    this.otp = {
+        code: otpCode,
+        expiresAt: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes
+        verified: false
+    };
+    return otpCode;
+};
+
+// Method to verify OTP
+orderSchema.methods.verifyOTP = function (inputOTP) {
+    if (!this.otp || !this.otp.code) {
+        return { success: false, message: 'No OTP generated for this order' };
+    }
+
+    if (this.otp.verified) {
+        return { success: false, message: 'OTP already verified' };
+    }
+
+    if (new Date() > this.otp.expiresAt) {
+        return { success: false, message: 'OTP expired' };
+    }
+
+    if (this.otp.code !== inputOTP.toString()) {
+        return { success: false, message: 'Invalid OTP' };
+    }
+
+    this.otp.verified = true;
+    return { success: true, message: 'OTP verified successfully' };
+};
 
 
 orderSchema.index({ customer: { phone: 1 } });

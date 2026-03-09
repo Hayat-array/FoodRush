@@ -51,7 +51,7 @@
 
 // // // // //     // 1. Find Admin User
 // // // // //     const user = await User.findOne({ email: session.user.email });
-    
+
 // // // // //     // 2. Find the Restaurant owned by this Admin
 // // // // //     const restaurant = await Restaurant.findOne({ owner: user._id });
 
@@ -77,7 +77,7 @@
 // // // // //   try {
 // // // // //     await connectDB();
 // // // // //     const session = await getServerSession();
-    
+
 // // // // //     if (!session?.user?.email) {
 // // // // //       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
 // // // // //     }
@@ -118,7 +118,7 @@
 // // // //   try {
 // // // //     console.log("🔍 [ADMIN ORDERS] Starting fetch...");
 // // // //     await connectDB();
-    
+
 // // // //     const session = await getServerSession();
 // // // //     if (!session?.user?.email) {
 // // // //       console.log("❌ No session found.");
@@ -137,7 +137,7 @@
 
 // // // //     // 2. Find Restaurant owned by this Admin
 // // // //     const restaurant = await Restaurant.findOne({ owner: user._id });
-    
+
 // // // //     if (!restaurant) {
 // // // //       console.log("❌ NO RESTAURANT FOUND for this Admin ID.");
 // // // //       // This is likely the problem!
@@ -167,19 +167,19 @@
 // // // //       await connectDB();
 // // // //       const session = await getServerSession();
 // // // //       if (!session?.user?.email) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
-  
+
 // // // //       const { orderId, status } = await req.json();
 // // // //       const user = await User.findOne({ email: session.user.email });
 // // // //       const restaurant = await Restaurant.findOne({ owner: user._id });
-  
+
 // // // //       if (!restaurant) return NextResponse.json({ success: false, error: "Unauthorized Restaurant" }, { status: 403 });
-  
+
 // // // //       const updatedOrder = await Order.findOneAndUpdate(
 // // // //         { _id: orderId, restaurant: restaurant._id },
 // // // //         { $set: { status: status } },
 // // // //         { new: true }
 // // // //       );
-  
+
 // // // //       return NextResponse.json({ success: true, data: updatedOrder });
 // // // //     } catch (error) {
 // // // //       return NextResponse.json({ success: false, error: error.message }, { status: 500 });
@@ -207,12 +207,12 @@
 
 // // //     // 2. Find Restaurant
 // // //     const restaurant = await Restaurant.findOne({ owner: user._id });
-    
+
 // // //     if (!restaurant) {
 // // //       console.log("❌ No restaurant linked to this admin.");
 // // //       return NextResponse.json({ success: false, error: "Restaurant not found" }, { status: 404 });
 // // //     }
-    
+
 // // //     console.log(`🏠 Admin owns Restaurant: ${restaurant.name} (ID: ${restaurant._id})`);
 
 // // //     // 3. Find Orders
@@ -251,11 +251,11 @@
 
 // //     // 1. Find Admin
 // //     const user = await User.findOne({ email: session.user.email });
-    
+
 // //     // 2. Find ALL Restaurants owned by this Admin
 // //     // Using .find() instead of .findOne() allows multiple restaurants
 // //     const restaurants = await Restaurant.find({ owner: user._id });
-    
+
 // //     if (!restaurants || restaurants.length === 0) {
 // //       return NextResponse.json({ success: true, data: [] }); // Return empty if no restaurants
 // //     }
@@ -396,34 +396,37 @@ import { getServerSession } from 'next-auth';
 import connectDB from '@/lib/db';
 import mongoose from 'mongoose';
 import { Order, Restaurant, User } from '@/lib/models';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req) {
   try {
     await connectDB();
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
 
-    if (!session?.user?.email) {
-      console.warn('Admin GET: missing session or email');
+    if (!session?.user?.id) {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
     }
 
-    const user = await User.findOne({ email: session.user.email });
-    if (!user) {
-      console.warn('Admin GET: session user not found in DB:', session.user.email);
-      return NextResponse.json({ success: false, error: "User not found" }, { status: 404 });
+    // Role-based logic
+    if (session.user.role === 'super_admin') {
+      const orders = await Order.find({})
+        .populate('restaurant', 'name')
+        .populate('customer.name')
+        .sort({ createdAt: -1 });
+      return NextResponse.json({ success: true, data: orders });
+    } else if (session.user.role === 'restaurant_owner') {
+      const restaurants = await Restaurant.find({ owner: session.user.id });
+      if (!restaurants || restaurants.length === 0) {
+        return NextResponse.json({ success: true, data: [] });
+      }
+      const restaurantIds = restaurants.map(r => r._id);
+      const orders = await Order.find({ restaurant: { $in: restaurantIds } }).sort({ createdAt: -1 });
+      return NextResponse.json({ success: true, data: orders });
+    } else {
+      return NextResponse.json({ success: false, error: "Unauthorized role" }, { status: 403 });
     }
-
-    const restaurants = await Restaurant.find({ owner: user._id });
-    if (!restaurants || restaurants.length === 0) {
-      return NextResponse.json({ success: true, data: [] }, { status: 200 });
-    }
-
-    const restaurantIds = restaurants.map(r => r._id);
-    const orders = await Order.find({ restaurant: { $in: restaurantIds } }).sort({ createdAt: -1 });
-
-    return NextResponse.json({ success: true, data: orders }, { status: 200 });
 
   } catch (error) {
     console.error("Admin Orders GET Error:", error);

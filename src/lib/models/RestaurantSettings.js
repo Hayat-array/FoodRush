@@ -574,7 +574,6 @@ restaurantSettingsSchema.pre('save', function (next) {
 });
 
 // Indexes
-restaurantSettingsSchema.index({ restaurant: 1 });
 restaurantSettingsSchema.index({ 'staff.user': 1 });
 
 const RestaurantSettings = mongoose.models.RestaurantSettings || mongoose.model('RestaurantSettings', restaurantSettingsSchema);

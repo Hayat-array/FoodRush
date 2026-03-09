@@ -1,4 +1,4 @@
-import connectDB from '@/lib/mongodb';
+import connectDB from '@/lib/db';
 import { Restaurant, Dish } from '@/lib/models';
 
 export async function GET(request, { params }) {

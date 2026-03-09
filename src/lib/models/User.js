@@ -23,6 +23,18 @@ const userSchema = new mongoose.Schema({
     addresses: [{ type: Object }],
     orderHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }],
     favoriteRestaurants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant' }],
+
+    // Delivery-specific fields
+    deliveryDetails: {
+        bikeNumber: { type: String, default: null },
+        licenseNumber: { type: String, default: null },
+        address: { type: String, default: null },
+        emergencyContact: { type: String, default: null },
+        emergencyContactName: { type: String, default: null },
+        isVerified: { type: Boolean, default: false },
+        rating: { type: Number, default: 0 },
+        totalDeliveries: { type: Number, default: 0 },
+    },
 }, { timestamps: true });
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);

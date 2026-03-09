@@ -2,16 +2,15 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import connectDB from '@/lib/db';
 import User from '@/lib/models/User';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
-// You might need to import your authOptions if getServerSession requires it in your setup
-// import { authOptions } from "@/app/api/auth/[...nextauth]/route"; 
 
 export async function GET(req) {
   try {
     await connectDB();
 
     // 1. Check Authentication
-    const session = await getServerSession(); // Pass authOptions here if needed
+    const session = await getServerSession(authOptions);
 
     if (!session || !session.user?.email) {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
@@ -37,7 +36,7 @@ export async function PUT(req) {
     await connectDB();
 
     // 1. Check Authentication
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
 
     if (!session || !session.user?.email) {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });

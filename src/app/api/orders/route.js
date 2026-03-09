@@ -306,6 +306,7 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import connectDB from '@/lib/db';
 import { Order, Restaurant } from '@/lib/models';
+import Notification from '@/lib/models/Notification';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 // POST: Place New Order (User Action)
@@ -344,6 +345,7 @@ export async function POST(req) {
 
     const newOrder = await Order.create({
       orderNumber: `ORD-${Date.now().toString().slice(-6)}`,
+      customerId: session.user.id,
       customer: {
         name: session.user.name,
         email: session.user.email,
@@ -359,10 +361,60 @@ export async function POST(req) {
       subtotal: total,
       deliveryFee: deliveryFee,
       taxes: taxes,
-      status: 'pending' // Initial status is always pending
+      status: 'pending',
+      timeline: []
     });
 
-    return NextResponse.json({ success: true, data: newOrder }, { status: 201 });
+    // Generate OTP for delivery verification
+    const otp = newOrder.generateOTP();
+
+    // Add initial timeline entry
+    newOrder.addTimelineEntry('pending', session.user.id, 'Order placed');
+
+    await newOrder.save();
+
+    // Create notification for restaurant owner
+    try {
+      await Notification.create({
+        userId: restaurant.owner || restaurantId,
+        userRole: 'restaurant_owner',
+        orderId: newOrder._id,
+        type: 'order_placed',
+        title: 'New Order Received',
+        message: `New order #${newOrder.orderNumber} for ₹${finalTotal.toFixed(2)}`,
+        data: {
+          orderNumber: newOrder.orderNumber,
+          total: finalTotal,
+          items: items.length
+        }
+      });
+
+      // Create notification for customer
+      await Notification.create({
+        userId: session.user.id,
+        userRole: 'user',
+        orderId: newOrder._id,
+        type: 'order_placed',
+        title: 'Order Placed Successfully',
+        message: `Your order #${newOrder.orderNumber} has been placed. Your delivery OTP is: ${otp}`,
+        data: {
+          orderNumber: newOrder.orderNumber,
+          otp,
+          total: finalTotal
+        }
+      });
+    } catch (notifError) {
+      console.error('Notification creation error:', notifError);
+      // Don't fail the order if notification fails
+    }
+
+    return NextResponse.json({
+      success: true,
+      data: {
+        ...newOrder.toObject(),
+        otp // Include OTP in response for customer to see
+      }
+    }, { status: 201 });
 
   } catch (error) {
     console.error("Order Creation Error:", error);

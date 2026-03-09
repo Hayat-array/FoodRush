@@ -69,7 +69,7 @@
 //                 <AlertDescription>{error}</AlertDescription>
 //               </Alert>
 //             )}
-            
+
 //             <div>
 //               <label className="block text-sm font-medium mb-2">Email</label>
 //               <div className="relative">
@@ -85,7 +85,7 @@
 //                 />
 //               </div>
 //             </div>
-            
+
 //             <div>
 //               <label className="block text-sm font-medium mb-2">Password</label>
 //               <div className="relative">
@@ -108,7 +108,7 @@
 //                 </button>
 //               </div>
 //             </div>
-            
+
 //             <div className="flex items-center justify-between">
 //               <label className="flex items-center">
 //                 <input type="checkbox" className="mr-2" />
@@ -118,7 +118,7 @@
 //                 Forgot password?
 //               </Link>
 //             </div>
-            
+
 //             <Button
 //               type="submit"
 //               disabled={loading}
@@ -128,7 +128,7 @@
 //               <ArrowRight className="w-4 h-4 ml-2" />
 //             </Button>
 //           </form>
-          
+
 //           <div className="mt-6 text-center">
 //             <p className="text-sm text-gray-600">
 //               Don't have an account?{' '}
@@ -182,8 +182,34 @@ export default function SignInPage() {
         title: "Welcome back!",
         description: "You have successfully signed in.",
       });
-      
-      router.push("/");
+
+      // Fetch session to get user role
+      const response = await fetch('/api/user/profile');
+      const userData = await response.json();
+
+      // Redirect based on role
+      if (userData.success && userData.data?.role) {
+        const role = userData.data.role;
+
+        switch (role) {
+          case 'super_admin':
+            router.push('/admin/dashboard');
+            break;
+          case 'restaurant_owner':
+            router.push('/restaurant/dashboard');
+            break;
+          case 'delivery':
+            router.push('/delivery/dashboard');
+            break;
+          case 'user':
+          default:
+            router.push('/');
+            break;
+        }
+      } else {
+        router.push('/');
+      }
+
       router.refresh();
     } catch (error) {
       toast({
@@ -236,11 +262,33 @@ export default function SignInPage() {
             </Button>
           </form>
         </CardContent>
-        <CardFooter className="flex justify-center">
+        <CardFooter className="flex flex-col space-y-2 text-center">
           <p className="text-sm text-gray-600">
             Don't have an account?{" "}
             <Link href="/auth/signup" className="text-orange-600 hover:underline font-medium">
               Sign up
+            </Link>
+          </p>
+          <p className="text-xs text-gray-500">
+            Restaurant Owner?{" "}
+            <Link href="/auth/admin/signin" className="text-orange-600 hover:underline font-medium">
+              Login Here
+            </Link>
+          </p>
+          <p className="text-xs text-gray-500">
+            Super Admin?{" "}
+            <Link href="/auth/admin/signin?type=super_admin" className="text-purple-600 hover:underline font-medium">
+              Portal Login
+            </Link>
+          </p>
+          <p className="text-xs text-gray-500">
+            Want to deliver?{" "}
+            <Link href="/auth/delivery/signup" className="text-green-600 hover:underline font-medium">
+              Join
+            </Link>{" "}
+            |{" "}
+            <Link href="/auth/delivery/signin" className="text-green-600 hover:underline font-medium">
+              Login
             </Link>
           </p>
         </CardFooter>

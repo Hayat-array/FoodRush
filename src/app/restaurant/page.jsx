@@ -20,7 +20,7 @@ export default function RestaurantsPage() {
   const [restaurants, setRestaurants] = useState([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   // Filter States
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCuisine, setSelectedCuisine] = useState('all');
@@ -66,15 +66,15 @@ export default function RestaurantsPage() {
     // 1. Search Filter
     if (searchTerm) {
       const lowerTerm = searchTerm.toLowerCase();
-      result = result.filter(r => 
-        r.name.toLowerCase().includes(lowerTerm) || 
+      result = result.filter(r =>
+        r.name.toLowerCase().includes(lowerTerm) ||
         r.cuisine.some(c => c.toLowerCase().includes(lowerTerm))
       );
     }
 
     // 2. Cuisine Filter
     if (selectedCuisine !== 'all') {
-      result = result.filter(r => 
+      result = result.filter(r =>
         r.cuisine.some(c => c.toLowerCase() === selectedCuisine.toLowerCase())
       );
     }
@@ -98,10 +98,36 @@ export default function RestaurantsPage() {
     setFilteredRestaurants(result);
   };
 
+  // Scroll visibility logic
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        // Scrolling down & passed threshold -> Hide
+        setIsVisible(false);
+      } else {
+        // Scrolling up -> Show
+        setIsVisible(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+
   return (
     <div className="min-h-screen bg-gray-50 pb-12">
-      {/* Page Header */}
-      <div className="bg-white border-b shadow-sm sticky top-16 z-30">
+      {/* Page Header - Auto-hides on scroll */}
+      <div
+        className={`bg-white border-b shadow-sm sticky top-16 z-30 transition-transform duration-300 ease-in-out ${isVisible ? 'translate-y-0' : '-translate-y-[150%]'
+          }`}
+      >
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
             <div>
@@ -110,12 +136,12 @@ export default function RestaurantsPage() {
                 {filteredRestaurants.length} restaurants open now
               </p>
             </div>
-            
+
             <div className="w-full md:w-auto flex gap-2">
               <div className="relative w-full md:w-80">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <Input 
-                  placeholder="Search restaurants or cuisines..." 
+                <Input
+                  placeholder="Search restaurants or cuisines..."
                   className="pl-10"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -155,8 +181,8 @@ export default function RestaurantsPage() {
             </Select>
 
             {(searchTerm || selectedCuisine !== 'all') && (
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 size="sm"
                 className="text-red-500 hover:text-red-600 hover:bg-red-50 h-9"
                 onClick={() => {
@@ -250,8 +276,8 @@ export default function RestaurantsPage() {
             <p className="text-gray-500 max-w-sm mx-auto mb-6">
               We couldn't find any restaurants matching your search. Try changing your filters or search term.
             </p>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               onClick={() => {
                 setSearchTerm('');
                 setSelectedCuisine('all');

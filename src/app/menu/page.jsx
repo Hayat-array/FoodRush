@@ -24,10 +24,41 @@ export default function MenuPage() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [reviewsDialog, setReviewsDialog] = useState({ open: false, dish: null });
+  const [showHeader, setShowHeader] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
     fetchDishes();
   }, []);
+
+  useEffect(() => {
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+
+          // Use hysteresis to prevent blinking
+          // Show header only when very close to top (< 20px)
+          // Hide header when scrolled past 100px
+          if (currentScrollY < 20) {
+            setShowHeader(true);
+          } else if (currentScrollY > 100) {
+            setShowHeader(false);
+          }
+          // Between 20-100px: maintain current state (no change)
+
+          setLastScrollY(currentScrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
 
   const fetchDishes = async () => {
     try {
@@ -92,27 +123,29 @@ export default function MenuPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow-sm sticky top-16 z-40 border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Our Menu</h1>
-              <p className="text-gray-500 text-sm">Discover delicious dishes</p>
-            </div>
+      {/* Header - Only show when showHeader is true */}
+      {showHeader && (
+        <div className="bg-white shadow-sm sticky top-16 z-40 border-b transition-all duration-300">
+          <div className="container mx-auto px-4 py-4">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">Our Menu</h1>
+                <p className="text-gray-500 text-sm">Discover delicious dishes</p>
+              </div>
 
-            {session && cartCount > 0 && (
-              <Button
-                onClick={() => router.push('/cartU')}
-                className="bg-orange-600 hover:bg-orange-700 relative"
-              >
-                <ShoppingCart className="w-4 h-4 mr-2" />
-                View Cart ({cartCount})
-              </Button>
-            )}
+              {session && cartCount > 0 && (
+                <Button
+                  onClick={() => router.push('/cartU')}
+                  className="bg-orange-600 hover:bg-orange-700 relative"
+                >
+                  <ShoppingCart className="w-4 h-4 mr-2" />
+                  View Cart ({cartCount})
+                </Button>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <div className="container mx-auto px-4 py-8">
         {/* Search */}

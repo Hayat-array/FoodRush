@@ -4,13 +4,13 @@
 // // // // // // // export async function GET(request) {
 // // // // // // //   try {
 // // // // // // //     await connectDB();
-    
+
 // // // // // // //     const { searchParams } = new URL(request.url).searchParams;
 // // // // // // //     const restaurantId = searchParams.get('restaurantId');
-    
+
 // // // // // // //     // Find restaurant
 // // // // // // //     const restaurant = await Restaurant.findById(restaurantId);
-    
+
 // // // // // // //     if (!restaurant) {
 // // // // // // //       return Response.json({
 // // // // // // //         success: false,
@@ -38,7 +38,7 @@
 // // // // // // export async function GET(req) {
 // // // // // //   try {
 // // // // // //     await connectDB();
-    
+
 // // // // // //     // 1. Get Logged In User
 // // // // // //     const session = await getServerSession();
 // // // // // //     if (!session?.user?.email) {
@@ -54,7 +54,7 @@
 // // // // // //     // 3. Find the Restaurant owned by this user
 // // // // // //     // We search by 'owner' field, not by ID passed in URL
 // // // // // //     const restaurant = await Restaurant.findOne({ owner: user._id });
-    
+
 // // // // // //     if (!restaurant) {
 // // // // // //       return NextResponse.json({ 
 // // // // // //         success: false, 
@@ -91,7 +91,7 @@
 
 // // // // //     // 1. Find User
 // // // // //     const user = await User.findOne({ email: session.user.email });
-    
+
 // // // // //     // 2. Find ALL restaurants owned by this user
 // // // // //     const restaurants = await Restaurant.find({ owner: user._id });
 
@@ -133,7 +133,7 @@
 
 // // // //     // Get restaurant data
 // // // //     const restaurantData = await req.json();
-    
+
 // // // //     // Create slug from name
 // // // //     const slug = restaurantData.name
 // // // //       .toLowerCase()
@@ -182,7 +182,7 @@
 
 // // //     // 1. Find User
 // // //     const user = await User.findOne({ email: session.user.email });
-    
+
 // // //     // 2. Find ALL restaurants owned by this user
 // // //     const restaurants = await Restaurant.find({ owner: user._id });
 
@@ -220,7 +220,7 @@
 
 // // //     // Get restaurant data
 // // //     const restaurantData = await req.json();
-    
+
 // // //     // Create slug from name
 // // //     const slug = restaurantData.name
 // // //       .toLowerCase()
@@ -309,7 +309,7 @@
 // //     }
 
 // //     const restaurantData = await req.json();
-    
+
 // //     // Create slug from name
 // //     const slug = restaurantData.name
 // //       .toLowerCase()
@@ -371,10 +371,10 @@
 
 // //         const user = await User.findOne({ email: session.user.email });
 // //         const data = await req.json();
-        
+
 // //         // --- Get ID from URL or Payload ---
 // //         let restaurantId = data.restaurantId; // Assuming frontend might pass ID in body
-        
+
 // //         // Find the existing restaurant by owner ID
 // //         const existingRestaurant = await Restaurant.findOne({ owner: user._id });
 
@@ -474,7 +474,7 @@
 //     }
 
 //     const restaurantData = await req.json();
-    
+
 //     // Create slug from name
 //     const slug = restaurantData.name
 //       .toLowerCase()
@@ -525,30 +525,44 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import connectDB from '@/lib/db';
-import { Restaurant, User } from '@/lib/models'; // <-- Correct Import Usage
+import { Restaurant, User } from '@/lib/models';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
-// GET: Fetch ALL Admin's Restaurants
+// GET: Fetch Restaurants (ALL for super_admin, OWNED for restaurant_owner)
 export async function GET(req) {
   try {
     await connectDB();
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
 
     if (!session?.user?.email) {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
     }
 
-    const user = await User.findOne({ email: session.user.email });
+    const user = await User.findOne({ email: session.user.email }).select('+role');
     if (!user) {
       return NextResponse.json({ success: false, error: "User not found" }, { status: 404 });
     }
 
-    const restaurants = await Restaurant.find({ owner: user._id });
+    let restaurants;
+
+    // Super Admin: Get ALL restaurants
+    if (user.role === 'super_admin') {
+      restaurants = await Restaurant.find({}).populate('owner', 'name email');
+    }
+    // Restaurant Owner: Get ONLY their restaurants
+    else if (user.role === 'restaurant_owner') {
+      restaurants = await Restaurant.find({ owner: user._id });
+    }
+    // Other roles: No access
+    else {
+      return NextResponse.json({ success: false, error: "Forbidden" }, { status: 403 });
+    }
 
     return NextResponse.json({ success: true, data: restaurants });
 
   } catch (error) {
     console.error("GET error:", error);
-    return NextResponse.json({ success: false, error: error.message || "Failed to fetch settings" }, { status: 500 });
+    return NextResponse.json({ success: false, error: error.message || "Failed to fetch restaurants" }, { status: 500 });
   }
 }
 
@@ -568,13 +582,13 @@ export async function POST(req) {
     }
 
     const restaurantData = await req.json();
-    
+
     // Create unique slug
     const slug = restaurantData.name
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, '')
-      + '-' + Math.random().toString(36).substring(2, 5); 
+      + '-' + Math.random().toString(36).substring(2, 5);
 
     // Destructure data for clean saving
     const { name, description, address, deliveryTime, deliveryFee, minOrder, isActive, cuisine, image, coverImage, upiId, tags, workingHours, phone } = restaurantData;
@@ -601,10 +615,10 @@ export async function POST(req) {
 
     await newRestaurant.save(); // The save operation that validates all fields
 
-    return NextResponse.json({ 
-      success: true, 
+    return NextResponse.json({
+      success: true,
       message: "Restaurant created successfully",
-      data: newRestaurant 
+      data: newRestaurant
     }, { status: 201 });
 
   } catch (error) {

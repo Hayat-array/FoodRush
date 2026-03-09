@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/foodrush';
+const MONGODB_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/foodrush';
 
 if (!MONGODB_URI) {
-  throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
+  throw new Error('Please define the MONGO_URI environment variable inside .env.local');
 }
 
 let cached = global.mongoose;
@@ -26,7 +26,7 @@ async function connectDB() {
       return mongoose;
     });
   }
-  
+
   try {
     cached.conn = await cached.promise;
   } catch (e) {

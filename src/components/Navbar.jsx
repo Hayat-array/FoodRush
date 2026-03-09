@@ -175,12 +175,12 @@ export default function Navbar() {
                 </DropdownMenuTrigger>
 
                 <DropdownMenuContent align="end" className="w-56">
-                  <div className="px-2 py-1.5 text-sm font-medium border-b bg-gray-50">
-                    <p className="truncate">{session.user.name}</p>
-                    <p className="text-xs text-gray-500 truncate font-normal">{session.user.email}</p>
+                  <div className="px-2 py-1.5 text-sm font-medium border-b bg-orange-600">
+                    <p className="truncate text-white">{session.user.name}</p>
+                    <p className="text-xs text-orange-100 truncate font-normal">{session.user.email}</p>
                     {/* Show Role Badge */}
                     {isAdminOrOwner && (
-                      <Badge variant="outline" className="mt-1 text-orange-600 border-orange-200 bg-orange-50 text-[10px]">
+                      <Badge variant="outline" className="mt-1 text-white border-orange-300 bg-orange-500 text-[10px]">
                         {role === 'admin' ? 'Admin' : 'Restaurant Owner'}
                       </Badge>
                     )}

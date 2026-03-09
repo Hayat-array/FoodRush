@@ -3,6 +3,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import Providers from "@/components/Providers";
 import ConditionalNavbar from "@/components/ConditionalNavbar";
+import Footer from "@/components/Footer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -50,7 +51,10 @@ export default function RootLayout({ children }) {
       >
         <Providers>
           <ConditionalNavbar />
-          <main className="min-h-screen">{children}</main>
+          <main className="min-h-screen flex flex-col">
+            {children}
+            <Footer />
+          </main>
           <Toaster />
         </Providers>
       </body>

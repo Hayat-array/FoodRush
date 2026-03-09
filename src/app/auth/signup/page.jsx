@@ -119,7 +119,7 @@
 // // //                 <AlertDescription>{error}</AlertDescription>
 // // //               </Alert>
 // // //             )}
-            
+
 // // //             <div>
 // // //               <label className="block text-sm font-medium mb-2">Full Name</label>
 // // //               <div className="relative">
@@ -135,7 +135,7 @@
 // // //                 />
 // // //               </div>
 // // //             </div>
-            
+
 // // //             <div>
 // // //               <label className="block text-sm font-medium mb-2">Email</label>
 // // //               <div className="relative">
@@ -151,7 +151,7 @@
 // // //                 />
 // // //               </div>
 // // //             </div>
-            
+
 // // //             <div>
 // // //               <label className="block text-sm font-medium mb-2">Phone Number</label>
 // // //               <div className="relative">
@@ -167,7 +167,7 @@
 // // //                 />
 // // //               </div>
 // // //             </div>
-            
+
 // // //             <div>
 // // //               <label className="block text-sm font-medium mb-2">Account Type</label>
 // // //               <Select value={formData.role} onValueChange={handleRoleChange}>
@@ -180,7 +180,7 @@
 // // //                 </SelectContent>
 // // //               </Select>
 // // //             </div>
-            
+
 // // //             <div>
 // // //               <label className="block text-sm font-medium mb-2">Password</label>
 // // //               <div className="relative">
@@ -204,7 +204,7 @@
 // // //                 </button>
 // // //               </div>
 // // //             </div>
-            
+
 // // //             <div>
 // // //               <label className="block text-sm font-medium mb-2">Confirm Password</label>
 // // //               <div className="relative">
@@ -228,7 +228,7 @@
 // // //                 </button>
 // // //               </div>
 // // //             </div>
-            
+
 // // //             <div className="flex items-center">
 // // //               <input type="checkbox" className="mr-2" required />
 // // //               <span className="text-sm">
@@ -243,7 +243,7 @@
 // // //                 </Link>
 // // //               </span>
 // // //             </div>
-            
+
 // // //             <Button
 // // //               type="submit"
 // // //               disabled={loading}
@@ -253,7 +253,7 @@
 // // //               <ArrowRight className="w-4 h-4 ml-2" />
 // // //             </Button>
 // // //           </form>
-          
+
 // // //           <div className="mt-6 text-center">
 // // //             <p className="text-sm text-gray-600">
 // // //               Already have an account?{' '}
@@ -267,132 +267,152 @@
 // // //     </div>
 // // //   );
 // // // }
-// // "use client";
+"use client";
 
-// // import { useState } from "react";
-// // import { useRouter } from "next/navigation";
-// // import Link from "next/link";
-// // import { Loader2, User, Mail, Phone, Lock } from "lucide-react";
-// // import { Button } from "@/components/ui/button";
-// // import { Input } from "@/components/ui/input";
-// // import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-// // import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Loader2, User, Mail, Phone, Lock } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
 
-// // export default function SignUpPage() {
-// //   const router = useRouter();
-// //   const { toast } = useToast();
-// //   const [loading, setLoading] = useState(false);
-// //   const [formData, setFormData] = useState({
-// //     name: "",
-// //     email: "",
-// //     phone: "",
-// //     password: "",
-// //   });
+export default function SignUpPage() {
+  const router = useRouter();
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+  });
 
-// //   const handleSubmit = async (e) => {
-// //     e.preventDefault();
-// //     setLoading(true);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-// //     try {
-// //       const res = await fetch("/api/auth/signup", {
-// //         method: "POST",
-// //         headers: { "Content-Type": "application/json" },
-// //         body: JSON.stringify(formData),
-// //       });
+    try {
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-// //       const data = await res.json();
+      const data = await res.json();
+      console.log('Signup response:', data);
 
-// //       if (!data.success) {
-// //         throw new Error(data.message);
-// //       }
+      if (!data.success) {
+        throw new Error(data.message);
+      }
 
-// //       toast({
-// //         title: "Account created!",
-// //         description: "You can now sign in with your credentials.",
-// //       });
+      toast({
+        title: "Account created!",
+        description: "You can now sign in with your credentials.",
+      });
 
-// //       router.push("/auth/signin");
-// //     } catch (error) {
-// //       toast({
-// //         title: "Error",
-// //         description: error.message || "Something went wrong",
-// //         variant: "destructive",
-// //       });
-// //     } finally {
-// //       setLoading(false);
-// //     }
-// //   };
+      router.push("/auth/signin");
+    } catch (error) {
+      console.error('Signup error:', error);
+      toast({
+        title: "Error",
+        description: error.message || "Something went wrong",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
-// //   return (
-// //     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-// //       <Card className="w-full max-w-md">
-// //         <CardHeader className="text-center">
-// //           <CardTitle className="text-2xl font-bold text-orange-600">FoodRush</CardTitle>
-// //           <CardDescription>Create an account to order food</CardDescription>
-// //         </CardHeader>
-// //         <CardContent>
-// //           <form onSubmit={handleSubmit} className="space-y-4">
-// //             <div className="relative">
-// //               <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-// //               <Input
-// //                 placeholder="Full Name"
-// //                 className="pl-9"
-// //                 value={formData.name}
-// //                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-// //                 required
-// //               />
-// //             </div>
-// //             <div className="relative">
-// //               <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-// //               <Input
-// //                 type="email"
-// //                 placeholder="Email Address"
-// //                 className="pl-9"
-// //                 value={formData.email}
-// //                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-// //                 required
-// //               />
-// //             </div>
-// //             <div className="relative">
-// //               <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-// //               <Input
-// //                 type="tel"
-// //                 placeholder="Phone Number"
-// //                 className="pl-9"
-// //                 value={formData.phone}
-// //                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-// //                 required
-// //               />
-// //             </div>
-// //             <div className="relative">
-// //               <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-// //               <Input
-// //                 type="password"
-// //                 placeholder="Password"
-// //                 className="pl-9"
-// //                 value={formData.password}
-// //                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-// //                 required
-// //                 minLength={6}
-// //               />
-// //             </div>
-// //             <Button type="submit" className="w-full bg-orange-600 hover:bg-orange-700" disabled={loading}>
-// //               {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Sign Up"}
-// //             </Button>
-// //           </form>
-// //         </CardContent>
-// //         <CardFooter className="flex justify-center">
-// //           <p className="text-sm text-gray-600">
-// //             Already have an account?{" "}
-// //             <Link href="/auth/signin" className="text-orange-600 hover:underline font-medium">
-// //               Sign in
-// //             </Link>
-// //           </p>
-// //         </CardFooter>
-// //       </Card>
-// //     </div>
-// //   );
-// // }
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <Card className="w-full max-w-md">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl font-bold text-orange-600">FoodRush</CardTitle>
+          <CardDescription>Create an account to order food</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="relative">
+              <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+              <Input
+                placeholder="Full Name"
+                className="pl-9"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                required
+              />
+            </div>
+            <div className="relative">
+              <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+              <Input
+                type="email"
+                placeholder="Email Address"
+                className="pl-9"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                required
+              />
+            </div>
+            <div className="relative">
+              <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+              <Input
+                type="tel"
+                placeholder="Phone Number"
+                className="pl-9"
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                required
+              />
+            </div>
+            <div className="relative">
+              <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+              <Input
+                type="password"
+                placeholder="Password"
+                className="pl-9"
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                required
+                minLength={6}
+              />
+            </div>
+            <Button type="submit" className="w-full bg-orange-600 hover:bg-orange-700" disabled={loading}>
+              {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Sign Up"}
+            </Button>
+          </form>
+        </CardContent>
+        <CardFooter className="flex flex-col space-y-2 text-center">
+          <p className="text-sm text-gray-600">
+            Already have an account?{" "}
+            <Link href="/auth/signin" className="text-orange-600 hover:underline font-medium">
+              Sign in
+            </Link>
+          </p>
+          <div className="pt-2 border-t w-full">
+            <p className="text-xs text-gray-500">
+              Super Admin / Restaurant Owner?{" "}
+              <Link href="/auth/admin/signup" className="text-orange-600 hover:underline font-medium">
+                Register Here
+              </Link>
+            </p>
+            <p className="text-xs text-gray-500 mt-1">
+              Want to deliver?{" "}
+              <Link href="/auth/delivery/signup" className="text-green-600 hover:underline font-medium">
+                Join
+              </Link>{" "}
+              |{" "}
+              <Link href="/auth/delivery/signin" className="text-green-600 hover:underline font-medium">
+                Login
+              </Link>
+            </p>
+          </div>
+        </CardFooter>
+      </Card>
+    </div>
+  );
+}
 // 'use client';
 
 // import { useState } from 'react';

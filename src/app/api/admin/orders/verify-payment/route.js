@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import dbConnect from '@/lib/mongodb';
+import connectDB from '@/lib/db';
 import { Order } from '@/lib/models';
 
 // POST - Verify UPI payment with amount checking
 export async function POST(req) {
     try {
-        await dbConnect();
+        await connectDB();
         const session = await getServerSession(authOptions);
 
         if (!session || !['admin', 'super_admin'].includes(session.user.role)) {
