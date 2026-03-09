@@ -192,6 +192,195 @@ const restaurantsData = [
         featured: true,
         tags: ["popular", "offers"],
         upiId: "biryanihouse@upi"
+    },
+    {
+        name: "Taco Fiesta",
+        slug: "taco-fiesta",
+        description: "Authentic Mexican tacos, burritos and nachos",
+        image: "https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?w=400",
+        coverImage: "https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?w=800",
+        cuisine: ["Mexican", "Tex-Mex", "Latin"],
+        rating: 4.4,
+        deliveryTime: "25-35 min",
+        deliveryFee: 30,
+        minOrder: 150,
+        address: {
+            street: "890 Whitefield",
+            city: "Bangalore",
+            state: "Karnataka",
+            zipCode: "560066",
+            coordinates: { lat: 12.9698, lng: 77.7499 }
+        },
+        contact: {
+            phone: "+91 9876543215",
+            email: "hello@tacofiesta.com"
+        },
+        isActive: true,
+        featured: true,
+        tags: ["new", "trending"],
+        upiId: "tacofiesta@upi"
+    },
+    {
+        name: "Dragon Wok",
+        slug: "dragon-wok",
+        description: "Delicious Chinese cuisine with authentic flavors",
+        image: "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=400",
+        coverImage: "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=800",
+        cuisine: ["Chinese", "Asian", "Noodles"],
+        rating: 4.5,
+        deliveryTime: "30-40 min",
+        deliveryFee: 35,
+        minOrder: 160,
+        address: {
+            street: "234 Electronic City",
+            city: "Bangalore",
+            state: "Karnataka",
+            zipCode: "560100",
+            coordinates: { lat: 12.8456, lng: 77.6603 }
+        },
+        contact: {
+            phone: "+91 9876543216",
+            email: "orders@dragonwok.com"
+        },
+        isActive: true,
+        featured: false,
+        tags: ["popular"],
+        upiId: "dragonwok@upi"
+    },
+    {
+        name: "Thai Basil",
+        slug: "thai-basil",
+        description: "Aromatic Thai curries and street food",
+        image: "https://images.unsplash.com/photo-1559314809-0d155014e29e?w=400",
+        coverImage: "https://images.unsplash.com/photo-1559314809-0d155014e29e?w=800",
+        cuisine: ["Thai", "Asian", "Curry"],
+        rating: 4.6,
+        deliveryTime: "35-45 min",
+        deliveryFee: 40,
+        minOrder: 200,
+        address: {
+            street: "567 JP Nagar",
+            city: "Bangalore",
+            state: "Karnataka",
+            zipCode: "560078",
+            coordinates: { lat: 12.9081, lng: 77.5858 }
+        },
+        contact: {
+            phone: "+91 9876543217",
+            email: "contact@thaibasil.com"
+        },
+        isActive: true,
+        featured: true,
+        tags: ["recommended", "trending"],
+        upiId: "thaibasil@upi"
+    },
+    {
+        name: "Mediterranean Grill",
+        slug: "mediterranean-grill",
+        description: "Fresh Mediterranean dishes and grilled delights",
+        image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=400",
+        coverImage: "https://images.unsplash.com/photo-1544025162-d76694265947?w=800",
+        cuisine: ["Mediterranean", "Greek", "Healthy"],
+        rating: 4.5,
+        deliveryTime: "30-40 min",
+        deliveryFee: 35,
+        minOrder: 180,
+        address: {
+            street: "432 Jayanagar",
+            city: "Bangalore",
+            state: "Karnataka",
+            zipCode: "560041",
+            coordinates: { lat: 12.9250, lng: 77.5838 }
+        },
+        contact: {
+            phone: "+91 9876543218",
+            email: "hello@meditgrill.com"
+        },
+        isActive: true,
+        featured: false,
+        tags: ["healthy", "new"],
+        upiId: "meditgrill@upi"
+    },
+    {
+        name: "Seoul Kitchen",
+        slug: "seoul-kitchen",
+        description: "Korean BBQ, kimchi and authentic Korean dishes",
+        image: "https://images.unsplash.com/photo-1580752300991-79042b4d6491?w=400",
+        coverImage: "https://images.unsplash.com/photo-1580752300991-79042b4d6491?w=800",
+        cuisine: ["Korean", "BBQ", "Asian"],
+        rating: 4.7,
+        deliveryTime: "35-45 min",
+        deliveryFee: 45,
+        minOrder: 250,
+        address: {
+            street: "789 Marathahalli",
+            city: "Bangalore",
+            state: "Karnataka",
+            zipCode: "560037",
+            coordinates: { lat: 12.9591, lng: 77.6974 }
+        },
+        contact: {
+            phone: "+91 9876543219",
+            email: "orders@seoulkitchen.com"
+        },
+        isActive: true,
+        featured: true,
+        tags: ["trending", "popular"],
+        upiId: "seoulkitchen@upi"
+    },
+    {
+        name: "Sweet Delights Cafe",
+        slug: "sweet-delights-cafe",
+        description: "Desserts, pastries, coffee and bakery items",
+        image: "https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400",
+        coverImage: "https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=800",
+        cuisine: ["Desserts", "Bakery", "Cafe"],
+        rating: 4.8,
+        deliveryTime: "20-30 min",
+        deliveryFee: 25,
+        minOrder: 100,
+        address: {
+            street: "123 Malleshwaram",
+            city: "Bangalore",
+            state: "Karnataka",
+            zipCode: "560003",
+            coordinates: { lat: 13.0006, lng: 77.5707 }
+        },
+        contact: {
+            phone: "+91 9876543220",
+            email: "sweet@delightscafe.com"
+        },
+        isActive: true,
+        featured: true,
+        tags: ["desserts", "popular", "offers"],
+        upiId: "sweetdelights@upi"
+    },
+    {
+        name: "Pasta Villa",
+        slug: "pasta-villa",
+        description: "Italian pasta, risotto and authentic Italian cuisine",
+        image: "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400",
+        coverImage: "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=800",
+        cuisine: ["Italian", "Pasta", "Continental"],
+        rating: 4.4,
+        deliveryTime: "25-35 min",
+        deliveryFee: 30,
+        minOrder: 170,
+        address: {
+            street: "345 Banashankari",
+            city: "Bangalore",
+            state: "Karnataka",
+            zipCode: "560070",
+            coordinates: { lat: 12.9250, lng: 77.5482 }
+        },
+        contact: {
+            phone: "+91 9876543221",
+            email: "info@pastavilla.com"
+        },
+        isActive: true,
+        featured: false,
+        tags: ["recommended"],
+        upiId: "pastavilla@upi"
     }
 ];
 
@@ -405,6 +594,301 @@ const dishesData = [
         ingredients: ["Chicken", "Yogurt", "Spices", "Lemon"],
         isRecommended: true,
         rating: 4.6
+    },
+    // Taco Fiesta dishes
+    {
+        name: "Classic Beef Tacos",
+        slug: "classic-beef-tacos",
+        description: "Three soft tacos with seasoned beef and fresh toppings",
+        image: "https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?w=400",
+        price: 240,
+        category: "Mexican",
+        dietary: ["non-vegetarian"],
+        preparationTime: "15 min",
+        ingredients: ["Beef", "Tortillas", "Lettuce", "Cheese", "Salsa"],
+        isPopular: true,
+        rating: 4.5
+    },
+    {
+        name: "Veggie Burrito Bowl",
+        slug: "veggie-burrito-bowl",
+        description: "Rice bowl with black beans, veggies and guacamole",
+        image: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=400",
+        price: 220,
+        originalPrice: 260,
+        category: "Mexican",
+        dietary: ["vegetarian"],
+        preparationTime: "12 min",
+        ingredients: ["Rice", "Black Beans", "Corn", "Avocado", "Salsa"],
+        isRecommended: true,
+        rating: 4.4
+    },
+    {
+        name: "Loaded Nachos",
+        slug: "loaded-nachos",
+        description: "Crispy nachos with cheese, jalapeños and sour cream",
+        image: "https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?w=400",
+        price: 180,
+        category: "Appetizers",
+        dietary: ["vegetarian"],
+        preparationTime: "10 min",
+        ingredients: ["Nachos", "Cheese", "Jalapeños", "Sour Cream"],
+        isPopular: true,
+        rating: 4.3
+    },
+    // Dragon Wok dishes
+    {
+        name: "Hakka Noodles",
+        slug: "hakka-noodles",
+        description: "Stir-fried noodles with vegetables and soy sauce",
+        image: "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400",
+        price: 200,
+        category: "Noodles",
+        dietary: ["vegetarian"],
+        spiceLevel: "medium",
+        preparationTime: "15 min",
+        ingredients: ["Noodles", "Vegetables", "Soy Sauce", "Garlic"],
+        isPopular: true,
+        rating: 4.4
+    },
+    {
+        name: "Manchurian Chicken",
+        slug: "manchurian-chicken",
+        description: "Crispy chicken in tangy Indo-Chinese sauce",
+        image: "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=400",
+        price: 280,
+        originalPrice: 320,
+        category: "Main Course",
+        dietary: ["non-vegetarian"],
+        spiceLevel: "medium",
+        preparationTime: "20 min",
+        ingredients: ["Chicken", "Cornflour", "Soy Sauce", "Vinegar", "Garlic"],
+        isRecommended: true,
+        rating: 4.6
+    },
+    {
+        name: "Fried Rice",
+        slug: "fried-rice",
+        description: "Wok-tossed rice with egg and vegetables",
+        image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400",
+        price: 180,
+        category: "Rice",
+        dietary: ["non-vegetarian"],
+        preparationTime: "12 min",
+        ingredients: ["Rice", "Egg", "Vegetables", "Soy Sauce"],
+        rating: 4.3
+    },
+    // Thai Basil dishes
+    {
+        name: "Pad Thai",
+        slug: "pad-thai",
+        description: "Classic Thai stir-fried noodles with peanuts",
+        image: "https://images.unsplash.com/photo-1559314809-0d155014e29e?w=400",
+        price: 260,
+        category: "Noodles",
+        dietary: ["non-vegetarian"],
+        spiceLevel: "mild",
+        preparationTime: "18 min",
+        ingredients: ["Rice Noodles", "Shrimp", "Peanuts", "Tamarind", "Lime"],
+        isPopular: true,
+        isRecommended: true,
+        rating: 4.7
+    },
+    {
+        name: "Green Curry",
+        slug: "green-curry",
+        description: "Aromatic coconut curry with vegetables",
+        image: "https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=400",
+        price: 240,
+        category: "Curry",
+        dietary: ["vegetarian"],
+        spiceLevel: "hot",
+        preparationTime: "20 min",
+        ingredients: ["Coconut Milk", "Green Curry Paste", "Vegetables", "Basil"],
+        isRecommended: true,
+        rating: 4.5
+    },
+    {
+        name: "Tom Yum Soup",
+        slug: "tom-yum-soup",
+        description: "Hot and sour Thai soup with shrimp",
+        image: "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400",
+        price: 200,
+        category: "Soup",
+        dietary: ["non-vegetarian"],
+        spiceLevel: "hot",
+        preparationTime: "15 min",
+        ingredients: ["Shrimp", "Lemongrass", "Lime", "Mushrooms", "Chili"],
+        rating: 4.4
+    },
+    // Mediterranean Grill dishes
+    {
+        name: "Chicken Shawarma",
+        slug: "chicken-shawarma",
+        description: "Grilled chicken wrap with garlic sauce",
+        image: "https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=400",
+        price: 220,
+        category: "Wraps",
+        dietary: ["non-vegetarian"],
+        preparationTime: "15 min",
+        ingredients: ["Chicken", "Pita", "Tahini", "Vegetables", "Garlic Sauce"],
+        isPopular: true,
+        rating: 4.6
+    },
+    {
+        name: "Falafel Platter",
+        slug: "falafel-platter",
+        description: "Crispy chickpea fritters with hummus",
+        image: "https://images.unsplash.com/photo-1593252719530-f0e8ffadc66e?w=400",
+        price: 240,
+        originalPrice: 280,
+        category: "Main Course",
+        dietary: ["vegetarian", "vegan"],
+        preparationTime: "18 min",
+        ingredients: ["Chickpeas", "Herbs", "Hummus", "Tahini", "Pita"],
+        isRecommended: true,
+        rating: 4.5
+    },
+    {
+        name: "Greek Salad",
+        slug: "greek-salad",
+        description: "Fresh salad with feta cheese and olives",
+        image: "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400",
+        price: 180,
+        category: "Salads",
+        dietary: ["vegetarian"],
+        preparationTime: "10 min",
+        ingredients: ["Lettuce", "Feta", "Olives", "Cucumber", "Tomatoes"],
+        rating: 4.3
+    },
+    // Seoul Kitchen dishes
+    {
+        name: "Korean BBQ Beef",
+        slug: "korean-bbq-beef",
+        description: "Marinated beef with Korean BBQ sauce",
+        image: "https://images.unsplash.com/photo-1580752300991-79042b4d6491?w=400",
+        price: 380,
+        originalPrice: 420,
+        category: "BBQ",
+        dietary: ["non-vegetarian"],
+        spiceLevel: "medium",
+        preparationTime: "25 min",
+        ingredients: ["Beef", "Soy Sauce", "Sesame", "Garlic", "Ginger"],
+        isPopular: true,
+        isRecommended: true,
+        rating: 4.8
+    },
+    {
+        name: "Bibimbap",
+        slug: "bibimbap",
+        description: "Mixed rice bowl with vegetables and egg",
+        image: "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400",
+        price: 300,
+        category: "Rice Bowl",
+        dietary: ["non-vegetarian"],
+        spiceLevel: "medium",
+        preparationTime: "20 min",
+        ingredients: ["Rice", "Vegetables", "Egg", "Gochujang", "Sesame Oil"],
+        isRecommended: true,
+        rating: 4.6
+    },
+    {
+        name: "Kimchi Fried Rice",
+        slug: "kimchi-fried-rice",
+        description: "Spicy fried rice with kimchi",
+        image: "https://images.unsplash.com/photo-1588137378633-dea1336ce1e2?w=400",
+        price: 250,
+        category: "Rice",
+        dietary: ["vegetarian"],
+        spiceLevel: "hot",
+        preparationTime: "15 min",
+        ingredients: ["Rice", "Kimchi", "Vegetables", "Sesame", "Gochugaru"],
+        isPopular: true,
+        rating: 4.5
+    },
+    // Sweet Delights Cafe dishes
+    {
+        name: "Chocolate Lava Cake",
+        slug: "chocolate-lava-cake",
+        description: "Warm chocolate cake with molten center",
+        image: "https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400",
+        price: 180,
+        category: "Desserts",
+        dietary: ["vegetarian"],
+        preparationTime: "12 min",
+        ingredients: ["Chocolate", "Butter", "Eggs", "Sugar", "Flour"],
+        isPopular: true,
+        isRecommended: true,
+        rating: 4.9
+    },
+    {
+        name: "New York Cheesecake",
+        slug: "new-york-cheesecake",
+        description: "Creamy cheesecake with berry compote",
+        image: "https://images.unsplash.com/photo-1533134486753-c833f0ed4866?w=400",
+        price: 200,
+        originalPrice: 240,
+        category: "Desserts",
+        dietary: ["vegetarian"],
+        preparationTime: "10 min",
+        ingredients: ["Cream Cheese", "Graham Crackers", "Berries", "Sugar"],
+        isRecommended: true,
+        rating: 4.8
+    },
+    {
+        name: "Cappuccino",
+        slug: "cappuccino",
+        description: "Classic Italian coffee with steamed milk",
+        image: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400",
+        price: 120,
+        category: "Beverages",
+        dietary: ["vegetarian"],
+        preparationTime: "5 min",
+        ingredients: ["Espresso", "Steamed Milk", "Milk Foam"],
+        isPopular: true,
+        rating: 4.6
+    },
+    // Pasta Villa dishes
+    {
+        name: "Spaghetti Carbonara",
+        slug: "spaghetti-carbonara",
+        description: "Creamy pasta with bacon and parmesan",
+        image: "https://images.unsplash.com/photo-1612874742237-6526221588e3?w=400",
+        price: 290,
+        category: "Pasta",
+        dietary: ["non-vegetarian"],
+        preparationTime: "18 min",
+        ingredients: ["Spaghetti", "Bacon", "Eggs", "Parmesan", "Black Pepper"],
+        isPopular: true,
+        rating: 4.7
+    },
+    {
+        name: "Penne Arrabbiata",
+        slug: "penne-arrabbiata",
+        description: "Spicy tomato pasta with garlic",
+        image: "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400",
+        price: 250,
+        originalPrice: 290,
+        category: "Pasta",
+        dietary: ["vegetarian", "vegan"],
+        spiceLevel: "hot",
+        preparationTime: "15 min",
+        ingredients: ["Penne", "Tomatoes", "Garlic", "Chili", "Olive Oil"],
+        isRecommended: true,
+        rating: 4.5
+    },
+    {
+        name: "Mushroom Risotto",
+        slug: "mushroom-risotto",
+        description: "Creamy Italian rice with wild mushrooms",
+        image: "https://images.unsplash.com/photo-1476124369491-c664426d8d9b?w=400",
+        price: 320,
+        category: "Rice",
+        dietary: ["vegetarian"],
+        preparationTime: "25 min",
+        ingredients: ["Arborio Rice", "Mushrooms", "Parmesan", "White Wine", "Butter"],
+        isRecommended: true,
+        rating: 4.6
     }
 ];
 
@@ -458,6 +942,41 @@ async function seedDatabase() {
         // Biryani House dishes (12-14)
         dishesData.slice(12, 15).forEach(dish => {
             dishesWithRestaurants.push({ ...dish, restaurant: restaurants[4]._id });
+        });
+
+        // Taco Fiesta dishes (15-17)
+        dishesData.slice(15, 18).forEach(dish => {
+            dishesWithRestaurants.push({ ...dish, restaurant: restaurants[5]._id });
+        });
+
+        // Dragon Wok dishes (18-20)
+        dishesData.slice(18, 21).forEach(dish => {
+            dishesWithRestaurants.push({ ...dish, restaurant: restaurants[6]._id });
+        });
+
+        // Thai Basil dishes (21-23)
+        dishesData.slice(21, 24).forEach(dish => {
+            dishesWithRestaurants.push({ ...dish, restaurant: restaurants[7]._id });
+        });
+
+        // Mediterranean Grill dishes (24-26)
+        dishesData.slice(24, 27).forEach(dish => {
+            dishesWithRestaurants.push({ ...dish, restaurant: restaurants[8]._id });
+        });
+
+        // Seoul Kitchen dishes (27-29)
+        dishesData.slice(27, 30).forEach(dish => {
+            dishesWithRestaurants.push({ ...dish, restaurant: restaurants[9]._id });
+        });
+
+        // Sweet Delights Cafe dishes (30-32)
+        dishesData.slice(30, 33).forEach(dish => {
+            dishesWithRestaurants.push({ ...dish, restaurant: restaurants[10]._id });
+        });
+
+        // Pasta Villa dishes (33-35)
+        dishesData.slice(33, 36).forEach(dish => {
+            dishesWithRestaurants.push({ ...dish, restaurant: restaurants[11]._id });
         });
 
         const dishes = await Dish.insertMany(dishesWithRestaurants);
