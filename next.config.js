@@ -2,7 +2,6 @@ const path = require('path');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  serverExternalPackages: ['mongoose'],
   reactStrictMode: true,
   images: {
     remotePatterns: [
