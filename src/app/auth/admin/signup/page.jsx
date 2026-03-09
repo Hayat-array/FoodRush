@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Loader2, User, Mail, Phone, Lock, Building2, Key, Calendar, ShieldCheck } from "lucide-react";
@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 
-export default function AdminSignUpPage() {
+function AdminSignUpContent() {
     const router = useRouter();
     const { toast } = useToast();
     const searchParams = useSearchParams();
@@ -248,5 +248,13 @@ export default function AdminSignUpPage() {
                 </CardFooter>
             </Card>
         </div>
+    );
+}
+
+export default function AdminSignUpPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50" />}>
+            <AdminSignUpContent />
+        </Suspense>
     );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -12,7 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 
 
 
-export default function AdminSignInPage() {
+function AdminSignInContent() {
     const router = useRouter();
     const { toast } = useToast();
     const searchParams = useSearchParams();
@@ -150,5 +150,13 @@ export default function AdminSignInPage() {
                 </CardFooter>
             </Card>
         </div>
+    );
+}
+
+export default function AdminSignInPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50" />}>
+            <AdminSignInContent />
+        </Suspense>
     );
 }

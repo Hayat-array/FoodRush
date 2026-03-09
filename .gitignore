@@ -36,11 +36,11 @@ __pycache__/
 # -------------------------------------------------------------------
 # Environment variables (MUST NOT BE COMMITTED)
 .env
-# .env.local
-# .env.*.local
-# secrets.*
-# credentials.*
-# *.config.local.*
+.env.local
+.env.*.local
+secrets.*
+credentials.*
+*.config.local.*
 
 # NextAuth session files (if using file-based storage)
 *.session.json
